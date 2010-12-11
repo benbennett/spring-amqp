@@ -26,7 +26,7 @@ import java.util.Map;
  * 
  * @see AmqpAdmin
  */
-public class Binding {
+public class Binding extends Route {
 
 	public static enum DestinationType {
 		QUEUE, EXCHANGE;
@@ -34,21 +34,45 @@ public class Binding {
 
 	private final String destination;
 
-	private final String exchange;
-
-	private final String routingKey;
-
 	private final Map<String, Object> arguments;
 
 	private final DestinationType destinationType;
 
 	public Binding(String destination, DestinationType destinationType, String exchange, String routingKey,
 			Map<String, Object> arguments) {
+		super(new CustomExchange(exchange,"default"),routingKey);
 		this.destination = destination;
 		this.destinationType = destinationType;
-		this.exchange = exchange;
-		this.routingKey = routingKey;
 		this.arguments = arguments;
+	}
+
+	public Binding(Queue queue, Exchange exchange, String routingKey,  Map<String, Object> arguments) {
+		super(exchange, routingKey);
+		this.destination = queue.getName();
+		this.destinationType = DestinationType.QUEUE;
+		this.arguments = arguments;
+	}
+
+	public Binding(Queue queue, Route route) {
+		super(route);
+		this.destination = queue.getName();
+		this.destinationType = DestinationType.QUEUE;
+		this.arguments = null;
+	}
+
+	public Binding(Queue queue, FanoutExchange exchange) {
+		this(queue, (Exchange) exchange, "",null);
+	}
+	public Binding(Queue queue, HeadersExchange exchange, Map<String, Object> arguments) {
+		this(queue, (Exchange) exchange, "",null);
+	}
+
+	public Binding(Queue queue, DirectExchange exchange, String routingKey) {
+		this(queue, (Exchange) exchange, routingKey,null);
+	}
+
+	public Binding(Queue queue, TopicExchange exchange, String routingKey) {
+		this(queue, (Exchange) exchange, routingKey,null);
 	}
 
 	public String getDestination() {
@@ -58,13 +82,11 @@ public class Binding {
 	public DestinationType getDestinationType() {
 		return this.destinationType;
 	}
-
-	public String getExchange() {
-		return this.exchange;
+	public String getRoutingKey(){
+		return this.getRoute().getRoutingKey();
 	}
-
-	public String getRoutingKey() {
-		return this.routingKey;
+	public Route getRoute() {
+		return (Route) this;
 	}
 
 	public Map<String, Object> getArguments() {
@@ -77,7 +99,7 @@ public class Binding {
 
 	@Override
 	public String toString() {
-		return "Binding [destination=" + destination + ", exchange=" + exchange + ", routingKey=" + routingKey + "]";
+		return "Binding [destination=" + destination + ", exchange=" + this.getRoute().getExchangeName() + ", routingKey=" + this.getRoute().getRoutingKey() + "]";
 	}
 
 }

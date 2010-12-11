@@ -178,10 +178,10 @@ public class RabbitAdmin implements AmqpAdmin, ApplicationContextAware, Initiali
 		rabbitTemplate.execute(new ChannelCallback<Object>() {
 			public Object doInRabbit(Channel channel) throws Exception {
 				if (binding.isDestinationQueue()) {
-					channel.queueUnbind(binding.getDestination(), binding.getExchange(), binding.getRoutingKey(),
+					channel.queueUnbind(binding.getDestination(), binding.getExchangeName(), binding.getRoutingKey(),
 							binding.getArguments());
 				} else {
-					channel.exchangeUnbind(binding.getDestination(), binding.getExchange(), binding.getRoutingKey(),
+					channel.exchangeUnbind(binding.getDestination(), binding.getExchangeName(), binding.getRoutingKey(),
 							binding.getArguments());
 				}
 				return null;
@@ -341,10 +341,10 @@ public class RabbitAdmin implements AmqpAdmin, ApplicationContextAware, Initiali
 						+ "]");
 			}
 			if (binding.isDestinationQueue()) {
-				channel.queueBind(binding.getDestination(), binding.getExchange(), binding.getRoutingKey(),
+				channel.queueBind(binding.getDestination(), binding.getExchangeName(), binding.getRoutingKey(),
 						binding.getArguments());
 			} else {
-				channel.exchangeBind(binding.getDestination(), binding.getExchange(), binding.getRoutingKey(),
+				channel.exchangeBind(binding.getDestination(), binding.getExchangeName(), binding.getRoutingKey(),
 						binding.getArguments());
 			}
 		}
