@@ -81,4 +81,6 @@ public interface AmqpTemplate {
 
 	Object convertSendAndReceive(String exchange, String routingKey, Object message) throws AmqpException;
 
+
+	Object convertSendAndReceive(String exchange, String routingKey, Object message, MessagePostProcessor messagePostProcessor) throws AmqpException;
 }
