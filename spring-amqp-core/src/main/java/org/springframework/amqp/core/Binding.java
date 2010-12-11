@@ -83,7 +83,7 @@ public class Binding extends Route {
 		return this.destinationType;
 	}
 	public String getRoutingKey(){
-		return this.getRoute().getRoutingKey();
+		return this.getRoute().getRoutingKeyString();
 	}
 	public Route getRoute() {
 		return (Route) this;
@@ -99,7 +99,7 @@ public class Binding extends Route {
 
 	@Override
 	public String toString() {
-		return "Binding [destination=" + destination + ", exchange=" + this.getRoute().getExchangeName() + ", routingKey=" + this.getRoute().getRoutingKey() + "]";
+		return "Binding [destination=" + destination + ", exchange=" + this.getRoute().getExchangeName() + ", routingKey=" + this.getRoutingKeyString() + "]";
 	}
 
 }

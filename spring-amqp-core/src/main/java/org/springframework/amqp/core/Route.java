@@ -31,7 +31,7 @@ public class Route {
 
 	public Route(Route route){
 		this.exchange = route.getExchange();
-		this.routingKey = route.getRoutingKey();
+		this.routingKey = route.getRoutingKeyString();
 	}
 	public Route(Exchange exchange, String routingKey) {
 		this.exchange = exchange;
@@ -50,7 +50,7 @@ public class Route {
 		return this.getExchange().getName();
 	}
 
-	public String getRoutingKey() {
+	public String getRoutingKeyString() {
 		return routingKey;
 	}
 

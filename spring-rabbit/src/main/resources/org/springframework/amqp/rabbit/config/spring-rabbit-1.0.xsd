@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xsd:schema xmlns="http://www.springframework.org/schema/rabbitmq" xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+<xsd:schema xmlns="http://www.springframework.org/schema/rabbit" xmlns:xsd="http://www.w3.org/2001/XMLSchema"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:tool="http://www.springframework.org/schema/tool"
-	xmlns:beans="http://www.springframework.org/schema/beans" targetNamespace="http://www.springframework.org/schema/rabbitmq"
+	xmlns:beans="http://www.springframework.org/schema/beans" targetNamespace="http://www.springframework.org/schema/rabbit"
 	elementFormDefault="qualified" attributeFormDefault="unqualified">
 
 	<xsd:import namespace="http://www.springframework.org/schema/beans" />
@@ -567,6 +567,95 @@
 		</xsd:attribute>
 	</xsd:complexType>
 
+	<xsd:element name="route">
+		<xsd:annotation>
+			<xsd:documentation>
+				Defines a route bean.
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:attribute name="id" type="xsd:string">
+				<xsd:annotation>
+					<xsd:documentation>
+						Unique ID for this route.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:attribute>
+			<xsd:attribute name="exchange" use="required" type="xsd:string">
+				<xsd:annotation>
+					<xsd:documentation>
+					</xsd:documentation>
+					<xsd:appinfo>
+						<tool:annotation kind="ref">
+							<tool:expected-type type="org.springframework.amqp.core.Exchange"/>
+						</tool:annotation>
+					</xsd:appinfo>
+				</xsd:annotation>
+			</xsd:attribute>
+			<xsd:attribute name="routing-key" type="xsd:string">
+				<xsd:annotation>
+					<xsd:documentation>
+						AMQP routing key.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:attribute>
+		</xsd:complexType>
+	</xsd:element>
+	<xsd:element name="binding">
+		<xsd:annotation>
+			<xsd:documentation>
+				Binds a queue to a route.
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:attribute name="id" type="xsd:string">
+				<xsd:annotation>
+					<xsd:documentation>
+						Unique ID for this route.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:attribute>
+			<xsd:attribute name="exchange" type="xsd:string">
+				<xsd:annotation>
+					<xsd:documentation>
+					</xsd:documentation>
+					<xsd:appinfo>
+						<tool:annotation kind="ref">
+							<tool:expected-type type="org.springframework.amqp.core.Exchange"/>
+						</tool:annotation>
+					</xsd:appinfo>
+				</xsd:annotation>
+			</xsd:attribute>
+			<xsd:attribute name="queue" use="required" type="xsd:string">
+				<xsd:annotation>
+					<xsd:documentation>
+					</xsd:documentation>
+					<xsd:appinfo>
+						<tool:annotation kind="ref">
+							<tool:expected-type type="org.springframework.amqp.core.Queue"/>
+						</tool:annotation>
+					</xsd:appinfo>
+				</xsd:annotation>
+			</xsd:attribute>
+			<xsd:attribute name="route" type="xsd:string">
+				<xsd:annotation>
+					<xsd:documentation>
+					</xsd:documentation>
+					<xsd:appinfo>
+						<tool:annotation kind="ref">
+							<tool:expected-type type="org.springframework.amqp.core.Route"/>
+						</tool:annotation>
+					</xsd:appinfo>
+				</xsd:annotation>
+			</xsd:attribute>
+			<xsd:attribute name="routing-key" type="xsd:string">
+				<xsd:annotation>
+					<xsd:documentation>
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:attribute>
+		</xsd:complexType>
+	</xsd:element>
 	<xsd:element name="admin">
 		<xsd:annotation>
 			<xsd:documentation><![CDATA[
