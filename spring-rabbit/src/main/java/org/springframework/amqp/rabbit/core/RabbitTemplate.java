@@ -54,7 +54,7 @@ public class RabbitTemplate extends RabbitAccessor implements RabbitOperations {
 
 	private static final String DEFAULT_ROUTING_KEY = "";
 
-	private static final long DEFAULT_REPLY_TIMEOUT = 5000;
+	private static final long DEFAULT_REPLY_TIMEOUT = 15000;
 
 	private static final String DEFAULT_ENCODING = "UTF-8";
 
