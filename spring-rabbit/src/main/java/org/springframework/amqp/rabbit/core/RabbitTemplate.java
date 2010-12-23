@@ -163,7 +163,7 @@ public class RabbitTemplate extends RabbitAccessor implements RabbitOperations {
 	}
 
 	public void convertAndSend(String exchange, String routingKey, final Object object) throws AmqpException {
-		send(exchange, routingKey, getRequiredMessageConverter().toMessage(object, new MessageProperties()));
+		convertAndSend(exchange,routingKey,object,null,this.getRequiredMessageConverter());
 	}
 
 	public void convertAndSend(Object message, MessagePostProcessor messagePostProcessor) throws AmqpException {
@@ -174,11 +174,18 @@ public class RabbitTemplate extends RabbitAccessor implements RabbitOperations {
 			throws AmqpException {
 		convertAndSend(this.exchange, routingKey, message, messagePostProcessor);
 	}
-
+	
 	public void convertAndSend(String exchange, String routingKey, final Object message,
 			final MessagePostProcessor messagePostProcessor) throws AmqpException {
-		Message messageToSend = getRequiredMessageConverter().toMessage(message, new MessageProperties());
-		messageToSend = messagePostProcessor.postProcessMessage(messageToSend);
+		convertAndSend(exchange,routingKey,message, messagePostProcessor,this.getRequiredMessageConverter());
+	}
+	public void convertAndSend(String exchange, String routingKey, final Object message,
+	                           final MessagePostProcessor messagePostProcessor,
+	                           MessageConverter messageConverter) throws AmqpException {
+		Message messageToSend = messageConverter.toMessage(message, new MessageProperties());
+		if(messagePostProcessor !=null){
+			messageToSend = messagePostProcessor.postProcessMessage(messageToSend);
+		}
 		send(exchange, routingKey, messageToSend);
 	}
 
@@ -244,28 +251,30 @@ public class RabbitTemplate extends RabbitAccessor implements RabbitOperations {
 	public Object convertSendAndReceive(final String routingKey, final Object message) throws AmqpException {
 		return this.convertSendAndReceive(this.exchange, routingKey, message);
 	}
-
-	public Object convertSendAndReceive(String exchange, String routingKey, final Object message, final MessagePostProcessor messagePostProcessor)
-			throws AmqpException {
+	public Object convertSendAndReceive(String exchange, String routingKey,
+	                      Object message,MessagePostProcessor messagePostProcessor,
+	                      MessageConverter messageConverter) throws AmqpException{
 		MessageProperties messageProperties = new MessageProperties();
-		Message requestMessage = getRequiredMessageConverter().toMessage(message, messageProperties);
-		requestMessage = messagePostProcessor.postProcessMessage(requestMessage);
+		Message requestMessage = messageConverter.toMessage(message, messageProperties);
+		if( messagePostProcessor!=null){
+			requestMessage = messagePostProcessor.postProcessMessage(requestMessage);
+		}
 		Message replyMessage = this.doSendAndReceive(exchange, routingKey, requestMessage);
 		if (replyMessage == null) {
 			return null;
 		}
-		return this.getRequiredMessageConverter().fromMessage(replyMessage);
+		return messageConverter.fromMessage(replyMessage);
+
+	}
+
+	public Object convertSendAndReceive(String exchange, String routingKey, final Object message, final MessagePostProcessor messagePostProcessor)
+			throws AmqpException {
+		return this.convertSendAndReceive(exchange,routingKey,message,messagePostProcessor,this.getRequiredMessageConverter());
 	}
 
 	public Object convertSendAndReceive(final String exchange, final String routingKey, final Object message)
 			throws AmqpException {
-		MessageProperties messageProperties = new MessageProperties();
-		Message requestMessage = getRequiredMessageConverter().toMessage(message, messageProperties);
-		Message replyMessage = this.doSendAndReceive(exchange, routingKey, requestMessage);
-		if (replyMessage == null) {
-			return null;
-		}
-		return this.getRequiredMessageConverter().fromMessage(replyMessage);
+		return this.convertSendAndReceive(exchange,routingKey,message,null,this.getRequiredMessageConverter());
 	}
 
 	private Message doSendAndReceive(final String exchange, final String routingKey, final Message message) {

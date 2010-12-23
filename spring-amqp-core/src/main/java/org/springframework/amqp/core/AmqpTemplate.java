@@ -17,6 +17,7 @@
 package org.springframework.amqp.core;
 
 import org.springframework.amqp.AmqpException;
+import org.springframework.amqp.support.converter.MessageConverter;
 
 /**
  * Specifies a basic set of AMQP operations.
@@ -55,6 +56,9 @@ public interface AmqpTemplate {
 
 	// receive methods for messages
 
+	void convertAndSend(String exchange, String routingKey,
+	                    Object message,MessagePostProcessor messagePostProcessor,
+	                    MessageConverter messageConverter) throws AmqpException;
 	Message receive() throws AmqpException;
 
 	Message receive(String queueName) throws AmqpException;
@@ -81,6 +85,9 @@ public interface AmqpTemplate {
 
 	Object convertSendAndReceive(String exchange, String routingKey, Object message) throws AmqpException;
 
+	Object convertSendAndReceive(String exchange, String routingKey,
+	                      Object message,MessagePostProcessor messagePostProcessor,
+	                      MessageConverter messageConverter) throws AmqpException;
 
 	Object convertSendAndReceive(String exchange, String routingKey, Object message, MessagePostProcessor messagePostProcessor) throws AmqpException;
 }
