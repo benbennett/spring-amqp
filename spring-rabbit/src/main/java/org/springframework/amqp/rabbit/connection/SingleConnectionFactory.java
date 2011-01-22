@@ -27,6 +27,7 @@ import org.springframework.beans.factory.DisposableBean;
 import org.springframework.util.Assert;
 
 import com.rabbitmq.client.Channel;
+import org.springframework.util.StringUtils;
 
 /**
  * A {@link ConnectionFactory} implementation that returns the same Connections from all
@@ -69,9 +70,14 @@ public class SingleConnectionFactory implements ConnectionFactory, DisposableBea
 	 * @param hostname the host name to connect to
 	 */
 	public SingleConnectionFactory(String hostname) {
-		Assert.hasText(hostname, "hostname is required");
 		this.rabbitConnectionFactory = new com.rabbitmq.client.ConnectionFactory();
-		this.rabbitConnectionFactory.setHost(hostname);
+		if(!StringUtils.hasText(hostname)){
+			logger.warn("Hostname was empty, defaulting to '"+this.getDefaultHostName()+"'");
+			this.rabbitConnectionFactory.setHost(this.getDefaultHostName());
+		}
+		else{
+			this.rabbitConnectionFactory.setHost(hostname);
+		}
 	}
 
 	/**
