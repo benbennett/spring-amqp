@@ -35,7 +35,7 @@ public abstract class AbstractExchange implements Exchange {
 
 	private  boolean autoDelete;
 
-	private final Map<String, Object> arguments;	
+	private Map<String, Object> arguments = null;
 
 	/**
 	 * Construct a new Exchange for bean usage. 
@@ -80,8 +80,25 @@ public abstract class AbstractExchange implements Exchange {
 		return durable;
 	}
 
+	/**
+	 * Set the durability of this exchange definition.
+	 * @param durable true if describing a durable exchange (the exchange will survive a server restart)
+	 */
+	public void setDurable(boolean durable) {
+		this.durable = durable;
+	}
+
 	public boolean isAutoDelete() {
 		return autoDelete;
+	}
+
+	/**
+	 * Set the auto-delete lifecycle of this exchange.
+	 * An non-auto-deleted exchange lasts until the server is shut down.
+	 * @param autoDelete true if the server should delete the exchange when it is no longer in use.
+	 */
+	public void setAutoDelete(boolean autoDelete) {
+		this.autoDelete = autoDelete;
 	}
 
 	/**
@@ -90,6 +107,14 @@ public abstract class AbstractExchange implements Exchange {
 	 */
 	public Map<String, Object> getArguments() {
 		return arguments;
+	}
+
+	/**
+	 * Set the collection of arbitrary arguments to use when declaring an exchange.
+	 * @param arguments A collection of arbitrary arguments to use when declaring an exchange.
+	 */
+	public void setArguments(Map<String, Object> arguments) {
+		this.arguments = arguments;
 	}
 
 	@Override
