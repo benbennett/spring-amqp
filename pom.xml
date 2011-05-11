@@ -4,7 +4,7 @@
 	<groupId>org.springframework.amqp</groupId>
 	<artifactId>spring-amqp-dist</artifactId>
 	<name>Spring AMQP Distribution</name>
-	<version>1.0.2.1-BE</version>
+	<version>1.0.2.3-BE</version>
 	<packaging>pom</packaging>
 	<modules> 
 		<module>spring-amqp-parent</module>
