@@ -23,13 +23,13 @@ import java.util.Map;
  */
 public class Queue {
 
-	private final String name;
+	private  String name;
 
-	private final boolean durable;
+	private  boolean durable;
 
-	private final boolean exclusive;
+	private  boolean exclusive;
 
-	private final boolean autoDelete;
+	private  boolean autoDelete;
 
 	private final java.util.Map<java.lang.String, java.lang.Object> arguments;
 

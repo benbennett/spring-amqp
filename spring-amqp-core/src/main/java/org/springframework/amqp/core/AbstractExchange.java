@@ -29,11 +29,11 @@ import java.util.Map;
  */
 public abstract class AbstractExchange implements Exchange {
 
-	private final String name;
+	private  String name;
 
-	private final boolean durable;
+	private  boolean durable;
 
-	private final boolean autoDelete;
+	private  boolean autoDelete;
 
 	private final Map<String, Object> arguments;	
 
